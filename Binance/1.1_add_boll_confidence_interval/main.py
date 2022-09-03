@@ -196,11 +196,13 @@ def sell(bollUb, bollLb, nowPrice):
 
 tradeInit()
 while 1:
+
    bollUb, bollLb, nowPrice = getBoll()
-   # print(bollUb, bollLb, nowPrice)
    if side != 0:
       sell(bollUb, bollLb, nowPrice)
 
    bollUb, bollLb, nowPrice = getBoll()
    if abs(side) < maxTradeNum:
       make(bollUb, bollLb, nowPrice)
+
+
