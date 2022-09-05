@@ -1,7 +1,23 @@
 量化交易开始!
-进程ID: 99386
+进程ID: 107356
 交易对: ETHBUSD
 单次下单张数: 0.01
 最多下单次数: 2
 再次下单最短间隔: 3600 
 
+09-05 12:04:00 第 1 次做空入场！ 现价: 1578.64 开仓价: 0.0 上轨: 1578.54
+09-05 12:04:01 触发止盈止损
+Traceback (most recent call last):
+  File "main.py", line 182, in <module>
+    sell(bollUb, bollLb, nowPrice)
+  File "main.py", line 165, in sell
+    exchange.new_order(symbol=symbol, side='BUY',type='MARKET',positionSide='SHORT',quantity=abs(side) * num)
+  File "/home/ubuntu/.local/lib/python3.8/site-packages/binance/um_futures/account.py", line 113, in new_order
+    return self.sign_request("POST", url_path, params)
+  File "/home/ubuntu/.local/lib/python3.8/site-packages/binance/api.py", line 82, in sign_request
+    return self.send_request(http_method, url_path, payload, special)
+  File "/home/ubuntu/.local/lib/python3.8/site-packages/binance/api.py", line 116, in send_request
+    self._handle_exception(response)
+  File "/home/ubuntu/.local/lib/python3.8/site-packages/binance/api.py", line 169, in _handle_exception
+    raise ClientError(status_code, err["code"], err["msg"], response.headers)
+binance.error.ClientError: (400, -2022, 'ReduceOnly Order is rejected.', {'Content-Type': 'application/json', 'Content-Length': '52', 'Connection': 'keep-alive', 'Date': 'Mon, 05 Sep 2022 04:04:01 GMT', 'Server': 'Tengine', 'X-MBX-USED-WEIGHT-1M': '15', 'X-MBX-ORDER-COUNT-10S': '1', 'X-MBX-ORDER-COUNT-1M': '2', 'x-response-time': '6ms', 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS', 'X-Cache': 'Error from cloudfront', 'Via': '1.1 c04988d1502b07df372730fda32777f0.cloudfront.net (CloudFront)', 'X-Amz-Cf-Pop': 'HKG54-C1', 'X-Amz-Cf-Id': 'fONl2l2xMxGOODD5nYWf_c-uZDAwqEvC8UvyhPC9I_Djw6WZU8htAw=='})

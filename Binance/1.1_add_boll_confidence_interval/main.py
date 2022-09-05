@@ -78,9 +78,10 @@ def make(bollUb, bollLb, nowPrice):
    # 做多
    if (nowPrice < bollLb) & (side >= 0) & (can_make() == 1):
 
-      exchange.new_order(symbol=symbol, side='BUY',type='MARKET',positionSide='LONG', quantity=num)['orderId']
+      exchange.new_order(symbol=symbol, side='BUY',type='MARKET',positionSide='LONG', quantity=num)
       side += 1
       lastMakeTime = time.time()
+      time.sleep(5)
       openPrice = float(exchange.get_position_risk(symbol=symbol)[0]['entryPrice'])
       print(time.strftime('%m-%d %H:%M:%S',time.localtime()),
       "第",abs(side),"次做多入场！",
@@ -92,9 +93,10 @@ def make(bollUb, bollLb, nowPrice):
    # 做空
    if (nowPrice > bollUb) & (side <= 0) & (can_make() == 1):
 
-      exchange.new_order_test(symbol=symbol, side='SELL',type='MARKET',positionSide='SHORT', quantity=num)['orderId']
+      exchange.new_order(symbol=symbol, side='SELL',type='MARKET',positionSide='SHORT', quantity=num)
       side -= 1
       lastMakeTime = time.time()
+      time.sleep(5)
       openPrice = float(exchange.get_position_risk(symbol=symbol)[1]['entryPrice'])
       print(time.strftime('%m-%d %H:%M:%S',time.localtime()),
       "第",abs(side),"次做空入场！",
