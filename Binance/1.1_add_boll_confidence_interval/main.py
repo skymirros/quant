@@ -13,7 +13,7 @@ numFormat = 2
 timeFrame = '5m'
 bollPeriod = 7
 bollMatype = 5
-num = 0.005                   # 单次下单张数
+num = 0.01                    # 单次下单张数
 maxTradeNum = 2               # 最大下单次数
 minTradeAgainTime = 3600      # 最短再次下单间隔,单位为秒
 avoidVolatilityTime = 300     # 避免波动的时间期限
@@ -77,16 +77,11 @@ def make(bollUb, bollLb, nowPrice):
 
    # 做多
    if (nowPrice < bollLb) & (side >= 0) & (can_make() == 1):
-      # exchange.createMarketBuyOrder(symbol,num,{
-      # 'tdMode':'cross',
-      # 'side': "buy",
-      # 'posSide': "long",
-      # 'ordType':"market",
-      # })
-      orderId = exchange.new_order_test(symbol=symbol, side='BUY',type='MARKET',positionSide='LONG', quantity=num)['orderId']
+
+      exchange.new_order(symbol=symbol, side='BUY',type='MARKET',positionSide='LONG', quantity=num)['orderId']
       side += 1
       lastMakeTime = time.time()
-      openPrice = exchange.get_orders(symbol=symbol,orderId=orderId)['avgPrice']
+      openPrice = float(exchange.get_position_risk(symbol=symbol)[0]['entryPrice'])
       print(time.strftime('%m-%d %H:%M:%S',time.localtime()),
       "第",abs(side),"次做多入场！",
       "现价:",nowPrice,
@@ -96,16 +91,11 @@ def make(bollUb, bollLb, nowPrice):
  
    # 做空
    if (nowPrice > bollUb) & (side <= 0) & (can_make() == 1):
-      # exchange.createMarketBuyOrder(symbol,num,{
-      # 'tdMode':'cross',
-      # 'side': "sell",
-      # 'posSide': "short",
-      # 'ordType':"market",
-      # })
-      orderId = exchange.new_order_test(symbol=symbol, side='SELL',type='MARKET',positionSide='SHORT', quantity=num)['orderId']
+
+      exchange.new_order_test(symbol=symbol, side='SELL',type='MARKET',positionSide='SHORT', quantity=num)['orderId']
       side -= 1
       lastMakeTime = time.time()
-      openPrice = exchange.get_orders(symbol=symbol,orderId=orderId)['avgPrice']
+      openPrice = float(exchange.get_position_risk(symbol=symbol)[1]['entryPrice'])
       print(time.strftime('%m-%d %H:%M:%S',time.localtime()),
       "第",abs(side),"次做空入场！",
       "现价:",nowPrice,
@@ -157,13 +147,8 @@ def sell(bollUb, bollLb, nowPrice):
    # 平多
    if side > 0:
       if ((nowPrice >= bollUb) & avoidVolatility()) | stopProfitOrLoss():
-         # exchange.createMarketSellOrder(symbol,abs(side) * num,{
-         # 'tdMode':'cross',
-         # 'side': "sell",
-         # 'posSide': "long",
-         # 'ordType':"market",
-         # })
-         exchange.new_order_test(symbol=symbol, side='SELL',type='MARKET',positionSide='LONG',quantity=abs(side) * num)
+     
+         exchange.new_order(symbol=symbol, side='SELL',type='MARKET',positionSide='LONG',quantity=abs(side) * num)
          print(time.strftime('%m-%d %H:%M:%S',time.localtime()),
          "平多:", abs(side) * num ,"张",
          "现价:",nowPrice,
@@ -176,13 +161,8 @@ def sell(bollUb, bollLb, nowPrice):
    # 平空
    if side < 0:
       if ((nowPrice <= bollLb) & avoidVolatility()) | stopProfitOrLoss():
-         # exchange.createMarketSellOrder(symbol,abs(side) * num,{
-         # 'tdMode':'cross',
-         # 'side': "buy",
-         # 'posSide': "short",
-         # 'ordType':"market",
-         # })
-         exchange.new_order_test(symbol=symbol, side='BUY',type='MARKET',positionSide='SHORT',quantity=abs(side) * num)
+     
+         exchange.new_order(symbol=symbol, side='BUY',type='MARKET',positionSide='SHORT',quantity=abs(side) * num)
          print(time.strftime('%m-%d %H:%M:%S',time.localtime()),
          "平空:", abs(side) * num,"张",
          "现价:",nowPrice,
