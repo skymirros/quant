@@ -6,8 +6,8 @@ from binance.um_futures import UMFutures
 
 
 '''交易参数'''
-key = "AAEeskkUuek3sfrN8UhqkRmbzYymVqcRspHlcGkJXawuk49kiMGqBRurrYY47sNh"
-secret = "clAyiHcsQBnNPbnUNEIXsVDo1tp753bCDC0jX99oMRItfUKIjgnO83oxsAnSYRfp"
+key = "密钥AK"
+secret = "密钥SK"
 symbol = 'ETHBUSD'
 numFormat = 2
 timeFrame = '5m'
